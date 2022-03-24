@@ -13,6 +13,7 @@ import android.view.View.VISIBLE
 import android.widget.CompoundButton
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatCheckBox
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.preference.PreferenceManager
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
@@ -68,6 +69,7 @@ object EncryptAuthenticateDialog {
             val passwordConfirmEditText: TextInputEditText = vb.editTextDialogEncryptPasswordConfirm
             val encryptSaveAsEditText: TextInputEditText = vb.editTextEncryptSaveAs
             val useAzeEncrypt: AppCompatCheckBox = vb.checkboxUseAze
+            val useAzeEncryptTextInfo: AppCompatTextView = vb.textViewAzecryptInfo
             useAzeEncrypt.setOnCheckedChangeListener(
                 createUseAzeEncryptCheckboxOnCheckedChangeListener(
                     c,
@@ -77,6 +79,15 @@ object EncryptAuthenticateDialog {
                     encryptSaveAsEditText
                 )
             )
+            useAzeEncryptTextInfo.setOnClickListener {
+                AlertDialog.show(
+                    activity = main,
+                    title = R.string.encrypt_option_use_aescrypt_title,
+                    content = R.string.encrypt_option_use_aescrypt_desc,
+                    contentIsHtml = true,
+                    positiveButtonText = android.R.string.ok
+                )
+            }
             val textInputLayoutPassword: WarnableTextInputLayout = vb.tilEncryptPassword
             val textInputLayoutPasswordConfirm: WarnableTextInputLayout = vb.tilEncryptPasswordConfirm
             val textInputLayoutEncryptSaveAs: WarnableTextInputLayout = vb.tilEncryptSaveAs

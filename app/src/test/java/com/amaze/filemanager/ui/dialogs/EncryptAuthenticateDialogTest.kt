@@ -2,7 +2,9 @@ package com.amaze.filemanager.ui.dialogs
 
 import android.content.Intent
 import android.os.Environment
+import android.text.Html
 import androidx.appcompat.widget.AppCompatCheckBox
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.preference.PreferenceManager
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
@@ -49,6 +51,7 @@ class EncryptAuthenticateDialogTest : AbstractEncryptDialogTests() {
     private lateinit var editTextEncryptPassword: TextInputEditText
     private lateinit var editTextEncryptPasswordConfirm: TextInputEditText
     private lateinit var checkboxUseAze: AppCompatCheckBox
+    private lateinit var textViewAzecryptInfo: AppCompatTextView
     private lateinit var okButton: MDButton
 
     /**
@@ -63,6 +66,29 @@ class EncryptAuthenticateDialogTest : AbstractEncryptDialogTests() {
                 randomizer, 16
             )
         )
+    }
+
+    /**
+     * Tapping the info button should display dialog explaining use of aze encrypt format.
+     */
+    @Test
+    fun testInfoButton() {
+        performTest({ _, _, _ ->
+            textViewAzecryptInfo.performClick()
+            assertEquals(2, ShadowDialog.getShownDialogs().size)
+            assertTrue(ShadowDialog.getLatestDialog().isShowing)
+            (ShadowDialog.getLatestDialog() as MaterialDialog).run {
+                assertEquals(getString(R.string.encrypt_option_use_aescrypt_title), titleView.text)
+                assertEquals(
+                    Html.fromHtml(
+                        getString(
+                            R.string.encrypt_option_use_aescrypt_desc
+                        ).replace("\n", "<br/>")
+                    ).toString(),
+                    contentView?.text.toString()
+                )
+            }
+        })
     }
 
     /**
@@ -280,6 +306,9 @@ class EncryptAuthenticateDialogTest : AbstractEncryptDialogTests() {
                                 R.id.til_encrypt_password
                             )
                             checkboxUseAze = findViewById<AppCompatCheckBox>(R.id.checkbox_use_aze)
+                            textViewAzecryptInfo = findViewById<AppCompatTextView>(
+                                R.id.text_view_azecrypt_info
+                            )
                             okButton = getActionButton(DialogAction.POSITIVE)
                             assertFalse(okButton.isEnabled)
                             assertTrue(true == editTextFileSaveAs.text?.startsWith(file.name))

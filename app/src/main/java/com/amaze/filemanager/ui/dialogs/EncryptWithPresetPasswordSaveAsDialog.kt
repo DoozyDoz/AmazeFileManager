@@ -65,6 +65,7 @@ object EncryptWithPresetPasswordSaveAsDialog {
                 }
             }
             val useAzeEncrypt = vb.checkboxUseAze
+            val useAzeEncryptTextInfo = vb.textViewAzecryptInfo
             if (ENCRYPT_PASSWORD_FINGERPRINT != password) {
                 useAzeEncrypt.setOnCheckedChangeListener(
                     createUseAzeEncryptCheckboxOnCheckedChangeListener(
@@ -75,9 +76,18 @@ object EncryptWithPresetPasswordSaveAsDialog {
                         encryptSaveAsEditText
                     )
                 )
+                useAzeEncryptTextInfo.setOnClickListener {
+                    AlertDialog.show(
+                        activity = main,
+                        title = R.string.encrypt_option_use_aescrypt_title,
+                        content = R.string.encrypt_option_use_aescrypt_desc,
+                        contentIsHtml = true,
+                        positiveButtonText = android.R.string.ok
+                    )
+                }
             } else {
                 useAzeEncrypt.visibility = View.INVISIBLE
-                vb.textViewAzecryptInfo.visibility = View.INVISIBLE
+                useAzeEncryptTextInfo.visibility = View.INVISIBLE
             }
 
             val saveAsDialog = MaterialDialog.Builder(c)

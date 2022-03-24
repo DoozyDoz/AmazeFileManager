@@ -2,9 +2,11 @@ package com.amaze.filemanager.ui.dialogs
 
 import android.content.Intent
 import android.os.Environment
+import android.text.Html
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import androidx.appcompat.widget.AppCompatCheckBox
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.preference.PreferenceManager
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
@@ -46,6 +48,7 @@ class EncryptWithPresetPasswordSaveAsDialogTest : AbstractEncryptDialogTests() {
     private lateinit var tilFileSaveAs: WarnableTextInputLayout
     private lateinit var editTextFileSaveAs: TextInputEditText
     private lateinit var checkboxUseAze: AppCompatCheckBox
+    private lateinit var textViewAzecryptInfo: AppCompatTextView
     private lateinit var okButton: MDButton
 
     /**
@@ -76,6 +79,36 @@ class EncryptWithPresetPasswordSaveAsDialogTest : AbstractEncryptDialogTests() {
     }
 
     /**
+     * Tapping the info button should display dialog explaining use of aze encrypt format.
+     */
+    @Test
+    fun testInfoButton() {
+        PreferenceManager.getDefaultSharedPreferences(AppConfig.getInstance())
+            .edit()
+            .putBoolean(PREFERENCE_CRYPT_FINGERPRINT, false)
+            .apply()
+        performTest(
+            password = ENCRYPT_PASSWORD_MASTER,
+            testContent = { _, _, _ ->
+                textViewAzecryptInfo.performClick()
+                assertEquals(2, ShadowDialog.getShownDialogs().size)
+                assertTrue(ShadowDialog.getLatestDialog().isShowing)
+                (ShadowDialog.getLatestDialog() as MaterialDialog).run {
+                    assertEquals(getString(R.string.encrypt_option_use_aescrypt_title), titleView.text)
+                    assertEquals(
+                        Html.fromHtml(
+                            getString(
+                                R.string.encrypt_option_use_aescrypt_desc
+                            ).replace("\n", "<br/>")
+                        ).toString(),
+                        contentView?.text.toString()
+                    )
+                }
+            }
+        )
+    }
+
+    /**
      * Test case when fingerprint encrypt option is enabled.
      *
      * Ensure optional checkbox is disabled - Fingerprint encryption cannot do AESCrypt.
@@ -90,6 +123,7 @@ class EncryptWithPresetPasswordSaveAsDialogTest : AbstractEncryptDialogTests() {
             testContent = { _, _, _ ->
                 assertEquals("${file.name}$CRYPT_EXTENSION", editTextFileSaveAs.text.toString())
                 assertEquals(INVISIBLE, checkboxUseAze.visibility)
+                assertEquals(INVISIBLE, textViewAzecryptInfo.visibility)
             },
             callback = object : EncryptDecryptUtils.EncryptButtonCallbackInterface {
                 override fun onButtonPressed(intent: Intent, password: String) {
@@ -180,6 +214,7 @@ class EncryptWithPresetPasswordSaveAsDialogTest : AbstractEncryptDialogTests() {
             testContent = { _, _, _ ->
                 assertEquals("${file.name}$AESCRYPT_EXTENSION", editTextFileSaveAs.text.toString())
                 assertEquals(VISIBLE, checkboxUseAze.visibility)
+                assertEquals(VISIBLE, textViewAzecryptInfo.visibility)
             },
             callback = object : EncryptDecryptUtils.EncryptButtonCallbackInterface {
                 override fun onButtonPressed(intent: Intent, password: String) {
@@ -289,6 +324,7 @@ class EncryptWithPresetPasswordSaveAsDialogTest : AbstractEncryptDialogTests() {
                             R.id.til_encrypt_save_as
                         )
                         checkboxUseAze = findViewById<AppCompatCheckBox>(R.id.checkbox_use_aze)
+                        textViewAzecryptInfo = findViewById<AppCompatTextView>(R.id.text_view_azecrypt_info)
                         okButton = getActionButton(DialogAction.POSITIVE)
                         testContent.invoke(it, intent, activity)
                     }
