@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:key="export_settings"
+        app:summary="Export settings to a txt"
+        app:title="Export Settings" />
+
+    <Preference
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:key="import_settings"
+        app:summary="Import settings from a txt"
+        app:title="Import Settings" />
+    
+</PreferenceScreen>

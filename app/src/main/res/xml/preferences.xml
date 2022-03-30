@@ -50,6 +50,13 @@
     <Preference
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:icon="@drawable/ic_baseline_import_export_24"
+        app:key="export"
+        app:summary="Export or import settings"
+        app:title="Export/Import Settings" />
+    <Preference
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:icon="@drawable/ic_preference_info"
         app:key="about"
         app:title="@string/about_amaze_file_manager_label" />

@@ -756,5 +756,6 @@ You only need to do this once, until the next time you select a new location for
 
     <string name="quick_desc">Files recently accessed through Amaze</string>
     <string name="recent_desc">Recently created or modified files</string>
+    <string name="export_import_settings_pref">Export/Import Settings</string>
 </resources>
 

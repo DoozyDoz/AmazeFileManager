@@ -85,6 +85,10 @@ object PreferencesConstants {
     const val ENCRYPT_PASSWORD_MASTER = "master"
     const val PREFERENCE_CRYPT_WARNING_REMEMBER_DEFAULT = false
 
+    // export_settings_prefs.xml
+    const val PREFERENCE_IMPORT_SETTINGS = "import_settings"
+    const val PREFERENCE_EXPORT_SETTINGS = "export_settings"
+
     // others
     const val PREFERENCE_CURRENT_TAB = ""
     const val PREFERENCE_BOOKMARKS_ADDED = "books_added"

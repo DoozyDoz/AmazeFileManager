@@ -59,6 +59,12 @@ class PrefsFragment : BasePrefsFragment() {
                 true
             }
 
+        findPreference<Preference>("export")?.onPreferenceClickListener =
+            Preference.OnPreferenceClickListener {
+                activity.pushFragment(ExportPrefsFragment())
+                true
+            }
+
         findPreference<Preference>("about")?.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
                 startActivity(Intent(activity, AboutActivity::class.java))
